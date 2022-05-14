@@ -1,0 +1,128 @@
+<div class="container-fluid row p-2">
+    <div class="container-fluid border border-dark w-50">
+        <div class="row border-bottom border-dark header_row">
+            <div class="col-md-1 icon">
+                <img class="arrow_img" src="../../assets/left_arrow.png">
+            </div>
+            <div class="col-md-1 icon">
+                <img class="user_img" src="https://cdn-icons-png.flaticon.com/512/12/12580.png">
+            </div>
+            <div class="col-md-4 details">
+                <div class="row user">{{userDetails.userName}}</div>
+                <div class="row number">+91 {{userDetails.mobile}}</div>
+            </div>
+            
+        </div>
+        <div class="row" >
+            <div *ngFor="let item of transactions; let i = index;">
+                <div class="dotted" [ngClass]="{'d-none' : i>0 && transactions[i].date.toString() === transactions[i-1].date.toString(),
+                                'mt-2': i===0,
+                                'mt-1': i>0}">
+                    <span>{{item.date | date:'d MMM y'}}</span>
+                </div>
+                <div class="container-fluid mt-4 card" [ngClass]="{'float-end': item.transactionDirection === 'Sent',
+                                                            'float-start':item.transactionDirection === 'Recieved',
+                                                            'mb-4': i === transactions.length-1,
+                                                            'mt-4': i>0 && transactions[i].date.toString() === transactions[i-1].date.toString() }">
+                    <ng-container [ngSwitch]="true">
+
+                        <!-- Condition 1 -->
+                        <div class="border border-dark p-2" 
+                        *ngSwitchCase="item.transactionDirection === 'Sent' && item.transactionType === 'Pay'" >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h2>{{item.amount | currency:"INR":'symbol' : '1.0-0'}}</h2>
+                                </div>
+                                <div class="col-md-6 message pt-2">
+                                    <i class="fa fa-check text-success pt-1 "></i>
+                                    <span>You Paid</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 transactionId">
+                                    <span>Transaction Id</span>
+                                    <br>
+                                    <span>{{item.transactionId}}</span>
+                                </div>
+                                <div class="col-md-4 angular"> 
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Condition 2 -->
+                        <div class="border border-dark p-2" 
+                        *ngSwitchCase="item.transactionDirection === 'Sent' && item.transactionType === 'Collect'" >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h2>{{item.amount | currency:"INR":'symbol' : '1.0-0'}}</h2>
+                                </div>
+                                <div class="col-md-6 message pt-2">
+                                    <i class="fa fa-link pt-1 "></i>
+                                    <span>You Requested</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <button class="button m-1 btn-light border-dark rounded-2">Cancel</button>
+                                </div>
+                                <div class="col-md-4 angular"> 
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Condition-3 -->
+                        <div class="border border-dark p-2" 
+                        *ngSwitchCase="item.transactionDirection === 'Recieved' && item.transactionType === 'Collect'" >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h2>{{item.amount | currency:"INR":'symbol' : '1.0-0'}}</h2>
+                                </div>
+                                <div class="col-md-6 message pt-2">
+                                    <i class="fa fa-link pt-1 "></i>
+                                    <span>Request Recieved</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <button class="button btn-light m-1 border-dark rounded-2">Pay</button>
+                                    <button class="button btn-light m-1 border-dark rounded-2 ">Decline</button>
+                                </div>
+                                <div class="col-md-4 angular"> 
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div> 
+                        <!-- Condition-4 -->
+                        <div class="border border-dark p-2" 
+                        *ngSwitchCase="item.transactionDirection === 'Recieved' && item.transactionType === 'Pay'" >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h2>{{item.amount | currency:"INR":'symbol' : '1.0-0'}}</h2>
+                                </div>
+                                <div class="col-md-6 message pt-2">
+                                    <i class="fa fa-check text-success pt-1 "></i>
+                                    <span>You Recieved</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 transactionId">
+                                    <span>Transaction Id</span>
+                                    <br>
+                                    <span>{{item.transactionId}}</span>
+                                </div>
+                                <div class="col-md-4 angular"> 
+                                    <i class="fa fa-angle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="footer_row">
+                        <span>{{item.date | date :'d MMM y, h:mm a'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
